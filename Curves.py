@@ -80,6 +80,6 @@ class Curves:
         return self.x_smooth, self.y_smooth
 
     def display(self, title=''):
-        plt.plot(self.x_list, self.y_list, 'x', self.x_pre, self.y_pre,'X', self.x_smooth, self.y_smooth, self.x_list, self.y_list, 'b')
+        plt.plot(self.x_list, self.y_list, 'x', self.x_pre, self.y_pre,'x', self.x_smooth, self.y_smooth, self.x_list, self.y_list, 'b')
         plt.title(title)
         plt.pause(0.5)
