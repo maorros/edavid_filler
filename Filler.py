@@ -9,7 +9,8 @@ class Filler:
     def __init__(self, canvas_ratio=20, x_translation=170, y_translation = 100, \
                  alpha = 0.3, alpha_2 = 0.1, n_switch = 15, dip_ratio = 5, \
                  robot=None, vis= None, board_height = 33, board_width=26, max_line_length = 1000, \
-                 sp_step_size = 1, sp_num_edge_points_remove = 3, sp_resolution = 0.1):
+                 sp_step_size = 1, sp_num_edge_points_remove = 3, sp_resolution = 0.1, \
+                 get_images = False):
         self.canvas_ratio = canvas_ratio
         self.x_translation = x_translation
         self.y_translation = y_translation
@@ -29,8 +30,10 @@ class Filler:
         self.sp_step_size = sp_step_size
         self.sp_num_edge_points_remove = sp_num_edge_points_remove
         self.sp_resolution = sp_resolution
+        self.get_images = get_images
 
     def draw(self):
+        random.seed(1)
         x_list = []
         y_list = []
         line_length = 0
@@ -67,7 +70,8 @@ class Filler:
                     print ('x_list',x_list)
                     print x_list[0]
                     res = self.robot.move_pose_safe(x_list, y_list)
-                    # img = self.vis.get_image()
+                    if self.get_images:
+                        img = self.vis.get_image()
                 else:  # current list is more than one point
                     cur = Curves()
                     cur.set_point_list(x_list, y_list)
@@ -75,7 +79,8 @@ class Filler:
                     cur.points_to_smooth(self.sp_resolution)
                     cur.display(str(n)+' '+str(line_length))
                     res = self.robot.move_pose_safe(cur.x_smooth, cur.y_smooth)
-                    # img = self.vis.get_image()
+                    if self.get_images:
+                        img = self.vis.get_image()
                 # for p in range(len(x_list) - 1):
                 #     if dip_count % dip_ratio == 0:
                 #         color = random.randint(0,1)
@@ -105,6 +110,7 @@ class Filler:
             cur.points_to_smooth(self.sp_resolution)
         # cur.display()
             res = self.robot.move_pose_safe(cur.x_smooth, cur.y_smooth)
-            # img = self.vis.get_image()
+            if self.get_images:
+                img = self.vis.get_image()
 
 
