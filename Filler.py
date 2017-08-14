@@ -7,7 +7,7 @@ from scipy import interpolate
 
 class Filler:
     def __init__(self, canvas_ratio=20, x_translation=170, y_translation = 100, \
-                 alpha = 0.3, alpha_2 = 0.1, n_switch = 15, dip_ratio = 5, \
+                 alpha = 0.3, alpha_2 = 0.1, n_switch = 15, \
                  robot=None, vis= None, board_height = 33, board_width=26, max_line_length = 1000, \
                  sp_step_size = 1, sp_num_edge_points_remove = 3, sp_resolution = 0.1, \
                  get_images = False):
@@ -20,8 +20,7 @@ class Filler:
 
         # width 650
         # height 500
-        self.dip_ratio = dip_ratio
-        self.dip_count = 0
+
         self.robot = robot
         self.vis = vis # visual feedback
         self.board_height = board_height
