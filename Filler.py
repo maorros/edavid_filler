@@ -37,7 +37,8 @@ class Filler:
         y_list = []
         line_length = 0
         color = random.randint(0, 1)
-        self.robot.dip_slot_paint(color)
+        if self.robot:
+            self.robot.dip_slot_paint(color)
         st = Strokes()
 
         st.set_board_size(self.board_height, self.board_width)
@@ -68,8 +69,9 @@ class Filler:
                 if len(x_list)==1: # current list is one point
                     print ('x_list',x_list)
                     print x_list[0]
-                    res = self.robot.move_pose_safe(x_list, y_list)
-                    if self.get_images:
+                    if self.robot:
+                        res = self.robot.move_pose_safe(x_list, y_list)
+                    if self.vis:
                         img = self.vis.get_image()
                 else:  # current list is more than one point
                     cur = Curves()
@@ -77,7 +79,9 @@ class Filler:
                     cur.points_to_pre(self.sp_step_size, self.sp_num_edge_points_remove)
                     cur.points_to_smooth(self.sp_resolution)
                     cur.display(str(n)+' '+str(line_length))
-                    res = self.robot.move_pose_safe(cur.x_smooth, cur.y_smooth)
+                    # cur.display_straight(str(n)+' '+str(line_length))
+                    if self.robot:
+                        res = self.robot.move_pose_safe(cur.x_smooth, cur.y_smooth)
                     if self.get_images:
                         img = self.vis.get_image()
                 # for p in range(len(x_list) - 1):
@@ -93,23 +97,27 @@ class Filler:
                 if line_length > self.max_line_length:
                     line_length = 0
                     color = random.randint(0, 1)
-                    self.robot.dip_slot_paint(color)
+                    if self.robot:
+                        self.robot.dip_slot_paint(color)
                 x, y = st.get_current_pos()
                 x_list.append(self.canvas_ratio * x + self.x_translation)
                 y_list.append(self.canvas_ratio * y + self.y_translation)
 
         # draw the rest of the points
         if len(x_list) == 1:
-            res = self.robot.move_pose_safe(x_list, y_list)
+            if self.robot:
+                res = self.robot.move_pose_safe(x_list, y_list)
             # img = self.vis.get_image()
         else:
             cur = Curves()
             cur.set_point_list(x_list, y_list)
             cur.points_to_pre(self.sp_step_size, self.sp_num_edge_points_remove)
             cur.points_to_smooth(self.sp_resolution)
-        # cur.display()
-            res = self.robot.move_pose_safe(cur.x_smooth, cur.y_smooth)
+            cur.display(str(n) + ' ' + str(line_length))
+            #cur.display_straight(str(n) + ' ' + str(line_length))
+            if self.robot:
+                res = self.robot.move_pose_safe(cur.x_smooth, cur.y_smooth)
             if self.get_images:
                 img = self.vis.get_image()
-
+        plt.pause(10)
 
